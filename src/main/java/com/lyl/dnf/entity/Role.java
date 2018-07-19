@@ -1,13 +1,14 @@
 package com.lyl.dnf.entity;
 
-import java.awt.Point;
 import java.util.List;
 
-public class DNFRole {
+import com.baidu.aip.entity.Location;
+
+public class Role {
 
 	private String name;
 	
-	private Point location;
+	private Location location;
 	
 	private List<Skill> skills;
 
@@ -19,11 +20,11 @@ public class DNFRole {
 		this.name = name;
 	}
 
-	public Point getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(Point location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 

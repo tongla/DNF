@@ -1,4 +1,4 @@
-package com.lyl.dnf.main;
+package com.lyl.dnf.util;
 
 import java.awt.AWTException;
 import java.awt.Rectangle;
@@ -6,6 +6,8 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+
+import com.baidu.aip.entity.Location;
 
 public class TypeRobot {
 	
@@ -67,13 +69,22 @@ public class TypeRobot {
 		robot.keyRelease(KeyEvent.VK_DOWN);
 	}
 	
-	public void attackX() {
-		keyTyped(KeyEvent.VK_X);
-	}
-	
 	public BufferedImage printScreen() {
 		Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		return robot.createScreenCapture(screenRect);
+	}
+	
+	public BufferedImage printScreen(Rectangle rectangle) {
+		 return robot.createScreenCapture(rectangle);
+	}
+	
+	public BufferedImage printScreen(int x, int y, int width, int height) {
+		Rectangle screenRect = new Rectangle(x, y, width, height);
+		return robot.createScreenCapture(screenRect);
+	}
+	
+	public BufferedImage printScreen(Location location) {
+		return printScreen(location.getLeft(), location.getTop(), location.getWidth(), location.getHeight());
 	}
 	
 }
