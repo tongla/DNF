@@ -1,7 +1,7 @@
 package com.lyl.dnf.config;
 // 配置类
 
-import com.baidu.aip.entity.Location;
+import java.awt.Rectangle;
 
 public class Configuration {
 	
@@ -14,7 +14,7 @@ public class Configuration {
 	private String qqPassword;
 	
 	// DNF 窗口位置
-	private Location dnfWindowLocation;
+	private Rectangle dnfWindowLocation;
 
 	public String getUsername() {
 		return username;
@@ -40,11 +40,11 @@ public class Configuration {
 		this.qqPassword = qqPassword;
 	}
 
-	public Location getDnfWindowLocation() {
+	public Rectangle getDnfWindowLocation() {
 		return dnfWindowLocation;
 	}
 
-	public void setDnfWindowLocation(Location dnfWindowLocation) {
+	public void setDnfWindowLocation(Rectangle dnfWindowLocation) {
 		this.dnfWindowLocation = dnfWindowLocation;
 	}
 	

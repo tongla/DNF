@@ -5,19 +5,19 @@ import com.lyl.dnf.entity.Role;
 public class RoleUtils {
 
 	public static int getRoleX(Role role) {
-		return role.getLocation().getLeft();
+		return role.getLocation().x;
 	}
 	
 	public static int getRoleY(Role role) {
-		return role.getLocation().getTop();
+		return role.getLocation().y;
 	}
 	
 	public static int getRoleWidth(Role role) {
-		return role.getLocation().getWidth();
+		return role.getRectangle().width;
 	}
 	
 	public static int getRoleHeight(Role role) {
-		return role.getLocation().getHeight();
+		return role.getRectangle().height;
 	}
 	
 	/**

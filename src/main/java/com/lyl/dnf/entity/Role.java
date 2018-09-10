@@ -1,16 +1,20 @@
 package com.lyl.dnf.entity;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
-
-import com.baidu.aip.entity.Location;
 
 public class Role {
 
 	private String name;
 	
-	private Location location;
+	private Rectangle rectangle;
 	
 	private List<Skill> skills;
+	
+	public Point getLocation() {
+		return rectangle.getLocation();
+	}
 
 	public String getName() {
 		return name;
@@ -20,12 +24,12 @@ public class Role {
 		this.name = name;
 	}
 
-	public Location getLocation() {
-		return location;
+	public Rectangle getRectangle() {
+		return rectangle;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setRectangle(Rectangle rectangle) {
+		this.rectangle = rectangle;
 	}
 
 	public List<Skill> getSkills() {

@@ -1,6 +1,5 @@
 package com.lyl.common.utils.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,15 +8,36 @@ import java.io.Writer;
 
 public class IOUtils {
 	
-	public static byte[] toByteArray(InputStream input) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		byte[] buf = new byte[4096];
-		int len;
-		while((len = input.read(buf)) != -1) {
-			baos.write(buf, 0, len);
-		}
-		return baos.toByteArray();
+	public static String readAsString(InputStream input) {
+		return readAsString(input, 4096);
 	}
+	
+	public static String readAsString(InputStream input, int bufSize) {
+		StringBuilder content = null;
+		try {
+			content = new StringBuilder(input.available());
+			byte[] buf = new byte[bufSize];
+			int len;
+			while((len = input.read(buf)) != -1) {
+				content.append(new String(buf, 0, len));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return content.toString();
+	}
+	
+	public static byte[] readAsByteArray(InputStream input) {
+		try {
+			byte[] bytes = new byte[input.available()];
+			input.read(bytes);
+			return bytes;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("读取数据失败:" + e.getMessage());
+		}
+	}	
 	
 	public static void copy(InputStream input, OutputStream output) throws IOException {
 		byte[] tmp = new byte[4096];
@@ -26,8 +46,6 @@ public class IOUtils {
 			output.write(tmp, 0, len);
 		}
 	}
-	
-	
 	
 	public static void close(InputStream... inputs) {
 		if (inputs != null) {

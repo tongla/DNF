@@ -1,10 +1,11 @@
 package com.lyl.dnf.main;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.baidu.aip.entity.Location;
 import com.lyl.common.utils.util.RandomUtils;
 import com.lyl.dnf.config.Configuration;
 import com.lyl.dnf.entity.Role;
@@ -15,9 +16,7 @@ public class Run {
 	
 	private static Role role;
 	
-	private static ParseImage parseImage = new ParseImageImpl();
-	
-	private static TypeRobot robot = new TypeRobot();
+	private static DetectionImage parseImage = new ParseImageImpl();
 	
 	private static ExecutorService brain = Executors.newFixedThreadPool(32);
 	
@@ -32,7 +31,7 @@ public class Run {
 		synchronized (role.getSkills()) {
 			if (!role.getSkills().isEmpty()) { 
 				Skill skill = role.getSkills().remove(RandomUtils.randomInt(role.getSkills().size()));
-				robot.keyTyped(skill.getKeycode());
+				TypeRobot.keyTyped(skill.getKeycode());
 				brain.execute(new CDRunnable(skill));
 				return skill;
 			}
@@ -46,12 +45,12 @@ public class Run {
 		synchronized(role.getSkills()) {
 			if (!role.getSkills().isEmpty()) {
 				skill = role.getSkills().remove(RandomUtils.randomInt(role.getSkills().size()));
-				robot.keyTyped(skill.getKeycode());
+				TypeRobot.keyTyped(skill.getKeycode());
 				brain.execute(new CDRunnable(skill));
 				return;
 			}
 		}
-		robot.keyTyped(KeyEvent.VK_X);
+		TypeRobot.keyTyped(KeyEvent.VK_X);
 	}
 	
 	public static Skill normalAttack() {
@@ -63,34 +62,34 @@ public class Run {
 	}
 	
 	// 移动到指定位置
-	public static void toLocation(Location location) {
-		toLocation(location.getLeft(), location.getTop());
+	public static void toLocation(Rectangle location) {
+		toLocation(location.x, location.y);
 	}
 	
 	public static void toLocation(int x, int y) {
 		while (true) {
-			int nx = role.getLocation().getLeft();
-			int ny = role.getLocation().getTop();
+			int nx = role.getLocation().x;
+			int ny = role.getLocation().y;
 			if (nx < x && ny < y) {
-				robot.rightPress();
-				robot.upPress();
+				TypeRobot.rightPress();
+				TypeRobot.upPress();
 			} else if (nx < x && ny > y) {
-				robot.rightPress();
-				robot.downPress(); 
+				TypeRobot.rightPress();
+				TypeRobot.downPress(); 
 			} else if (nx > x && ny < y) {
-				robot.leftPress();
-				robot.upPress();
+				TypeRobot.leftPress();
+				TypeRobot.upPress();
 			} else if (nx > x && ny > y) {
-				robot.leftPress();
-				robot.downPress();
+				TypeRobot.leftPress();
+				TypeRobot.downPress();
 			} else if (nx > x) {
-				robot.leftPress();
+				TypeRobot.leftPress();
 			} else if (nx < x) {
-				robot.rightPress();
+				TypeRobot.rightPress();
 			} else if (ny < y) {
-				robot.upPress();
+				TypeRobot.upPress();
 			} else if (ny > y) {
-				robot.downPress();
+				TypeRobot.downPress();
 			} else {
 				attack();
 			}
@@ -98,8 +97,8 @@ public class Run {
 	}
 	
 	// 达到目标点
-	public static boolean isArrive(Location point) {
-		return role.getLocation().getLeft() == point.getLeft() && role.getLocation().getTop() == point.getTop();
+	public static boolean isArrive(Point point) {
+		return role.getLocation().x == point.x && role.getLocation().y == point.y;
 	}
 	
 	// 更新角色所在位置
@@ -113,9 +112,9 @@ public class Run {
 		
 		public void run() {
 			while (true) {
-				 Location location = parseImage.getLocation(role.getName(), robot.printScreen(cfg.getDnfWindowLocation()));
-				 role.setLocation(location);
-				 sleep(300);
+				 Rectangle rectangle = parseImage.getLocation(role.getName(), TypeRobot.printScreen(cfg.getDnfWindowLocation()));
+				 role.setRectangle(rectangle);
+				 sleep(400);
 			}
 		}
 		
