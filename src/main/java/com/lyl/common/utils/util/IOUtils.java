@@ -1,7 +1,9 @@
 package com.lyl.common.utils.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
@@ -39,6 +41,24 @@ public class IOUtils {
 		}
 	}	
 	
+	public static byte[] objectToByteArray(Object obj) {
+		if (obj == null)
+			return null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(obj);
+			oos.flush();
+			return baos.toByteArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			close(oos, baos);
+		}
+	}
+	
 	public static void copy(InputStream input, OutputStream output) throws IOException {
 		byte[] tmp = new byte[4096];
 		int len;
@@ -52,7 +72,7 @@ public class IOUtils {
 			for (InputStream input : inputs) {
 				if (input != null) {
 					try {
-							input.close();
+						input.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
